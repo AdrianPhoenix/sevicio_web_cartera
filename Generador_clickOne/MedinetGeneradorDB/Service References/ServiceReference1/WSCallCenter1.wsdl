@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://Localhost/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://Localhost/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://Localhost/">
+      <s:element name="Lineas">
+        <s:complexType />
+      </s:element>
+      <s:element name="LineasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LineasResult" type="tns:ArrayOfLinea" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLinea">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Linea" nillable="true" type="tns:Linea" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Linea">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="NombreLinea" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodigoLinea" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Imeis">
+        <s:complexType />
+      </s:element>
+      <s:element name="ImeisResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ImeisResult" type="tns:ArrayOfImei" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfImei">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Imei" nillable="true" type="tns:Imei" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Imei">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroIMEI" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Empresa_Id" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="FechaInicio" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="FechaFin" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="rif" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nombreEmpresa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ImeisActivos">
+        <s:complexType />
+      </s:element>
+      <s:element name="ImeisActivosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ImeisActivosResult" type="tns:ArrayOfImei" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Empresas">
+        <s:complexType />
+      </s:element>
+      <s:element name="EmpresasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EmpresasResult" type="tns:ArrayOfEmpresa" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEmpresa">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Empresa" nillable="true" type="tns:Empresa" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Empresa">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Foto" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Rif" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="TablasDescargar">
+        <s:complexType />
+      </s:element>
+      <s:element name="TablasDescargarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TablasDescargarResult" type="tns:ArrayOfTabla" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTabla">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Tabla" nillable="true" type="tns:Tabla" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Tabla">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nombre" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="TablasIncluir">
+        <s:complexType />
+      </s:element>
+      <s:element name="TablasIncluirResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TablasIncluirResult" type="tns:ArrayOfTabla" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BuscarImei">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="imei" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BuscarImeiResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BuscarImeiResult" type="tns:ArrayOfImei" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Parametros">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="empre" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ParametrosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ParametrosResult" type="tns:ArrayOfEmpresaParametro" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEmpresaParametro">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EmpresaParametro" nillable="true" type="tns:EmpresaParametro" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EmpresaParametro">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Valor" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Versiones">
+        <s:complexType />
+      </s:element>
+      <s:element name="VersionesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VersionesResult" type="tns:ArrayOfControlVersion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfControlVersion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ControlVersion" nillable="true" type="tns:ControlVersion" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ControlVersion">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Version" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FechaPublicacion" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Archivo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Codigo" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="registrarEquipo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="imei" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="registrarEquipoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="registrarEquipoResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ImeisFacturador">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fDesde" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fHasta" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idEmpresa" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ImeisFacturadorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ImeisFacturadorResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="enviarSMS">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="rifEmpresa" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idMensaje" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="telefono" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="texto" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="enviarSMSResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="enviarSMSResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="registrarImeis">
+        <s:complexType />
+      </s:element>
+      <s:element name="registrarImeisResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="setInstruccionesSql">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="instrucciones" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="registrationIds" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="setInstruccionesSqlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="setInstruccionesSqlResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="LineasSoapIn">
+    <wsdl:part name="parameters" element="tns:Lineas" />
+  </wsdl:message>
+  <wsdl:message name="LineasSoapOut">
+    <wsdl:part name="parameters" element="tns:LineasResponse" />
+  </wsdl:message>
+  <wsdl:message name="ImeisSoapIn">
+    <wsdl:part name="parameters" element="tns:Imeis" />
+  </wsdl:message>
+  <wsdl:message name="ImeisSoapOut">
+    <wsdl:part name="parameters" element="tns:ImeisResponse" />
+  </wsdl:message>
+  <wsdl:message name="ImeisActivosSoapIn">
+    <wsdl:part name="parameters" element="tns:ImeisActivos" />
+  </wsdl:message>
+  <wsdl:message name="ImeisActivosSoapOut">
+    <wsdl:part name="parameters" element="tns:ImeisActivosResponse" />
+  </wsdl:message>
+  <wsdl:message name="EmpresasSoapIn">
+    <wsdl:part name="parameters" element="tns:Empresas" />
+  </wsdl:message>
+  <wsdl:message name="EmpresasSoapOut">
+    <wsdl:part name="parameters" element="tns:EmpresasResponse" />
+  </wsdl:message>
+  <wsdl:message name="TablasDescargarSoapIn">
+    <wsdl:part name="parameters" element="tns:TablasDescargar" />
+  </wsdl:message>
+  <wsdl:message name="TablasDescargarSoapOut">
+    <wsdl:part name="parameters" element="tns:TablasDescargarResponse" />
+  </wsdl:message>
+  <wsdl:message name="TablasIncluirSoapIn">
+    <wsdl:part name="parameters" element="tns:TablasIncluir" />
+  </wsdl:message>
+  <wsdl:message name="TablasIncluirSoapOut">
+    <wsdl:part name="parameters" element="tns:TablasIncluirResponse" />
+  </wsdl:message>
+  <wsdl:message name="BuscarImeiSoapIn">
+    <wsdl:part name="parameters" element="tns:BuscarImei" />
+  </wsdl:message>
+  <wsdl:message name="BuscarImeiSoapOut">
+    <wsdl:part name="parameters" element="tns:BuscarImeiResponse" />
+  </wsdl:message>
+  <wsdl:message name="ParametrosSoapIn">
+    <wsdl:part name="parameters" element="tns:Parametros" />
+  </wsdl:message>
+  <wsdl:message name="ParametrosSoapOut">
+    <wsdl:part name="parameters" element="tns:ParametrosResponse" />
+  </wsdl:message>
+  <wsdl:message name="VersionesSoapIn">
+    <wsdl:part name="parameters" element="tns:Versiones" />
+  </wsdl:message>
+  <wsdl:message name="VersionesSoapOut">
+    <wsdl:part name="parameters" element="tns:VersionesResponse" />
+  </wsdl:message>
+  <wsdl:message name="registrarEquipoSoapIn">
+    <wsdl:part name="parameters" element="tns:registrarEquipo" />
+  </wsdl:message>
+  <wsdl:message name="registrarEquipoSoapOut">
+    <wsdl:part name="parameters" element="tns:registrarEquipoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ImeisFacturadorSoapIn">
+    <wsdl:part name="parameters" element="tns:ImeisFacturador" />
+  </wsdl:message>
+  <wsdl:message name="ImeisFacturadorSoapOut">
+    <wsdl:part name="parameters" element="tns:ImeisFacturadorResponse" />
+  </wsdl:message>
+  <wsdl:message name="enviarSMSSoapIn">
+    <wsdl:part name="parameters" element="tns:enviarSMS" />
+  </wsdl:message>
+  <wsdl:message name="enviarSMSSoapOut">
+    <wsdl:part name="parameters" element="tns:enviarSMSResponse" />
+  </wsdl:message>
+  <wsdl:message name="registrarImeisSoapIn">
+    <wsdl:part name="parameters" element="tns:registrarImeis" />
+  </wsdl:message>
+  <wsdl:message name="registrarImeisSoapOut">
+    <wsdl:part name="parameters" element="tns:registrarImeisResponse" />
+  </wsdl:message>
+  <wsdl:message name="setInstruccionesSqlSoapIn">
+    <wsdl:part name="parameters" element="tns:setInstruccionesSql" />
+  </wsdl:message>
+  <wsdl:message name="setInstruccionesSqlSoapOut">
+    <wsdl:part name="parameters" element="tns:setInstruccionesSqlResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WSCallCenterSoap">
+    <wsdl:operation name="Lineas">
+      <wsdl:input message="tns:LineasSoapIn" />
+      <wsdl:output message="tns:LineasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Imeis">
+      <wsdl:input message="tns:ImeisSoapIn" />
+      <wsdl:output message="tns:ImeisSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ImeisActivos">
+      <wsdl:input message="tns:ImeisActivosSoapIn" />
+      <wsdl:output message="tns:ImeisActivosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Empresas">
+      <wsdl:input message="tns:EmpresasSoapIn" />
+      <wsdl:output message="tns:EmpresasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TablasDescargar">
+      <wsdl:input message="tns:TablasDescargarSoapIn" />
+      <wsdl:output message="tns:TablasDescargarSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TablasIncluir">
+      <wsdl:input message="tns:TablasIncluirSoapIn" />
+      <wsdl:output message="tns:TablasIncluirSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BuscarImei">
+      <wsdl:input message="tns:BuscarImeiSoapIn" />
+      <wsdl:output message="tns:BuscarImeiSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Parametros">
+      <wsdl:input message="tns:ParametrosSoapIn" />
+      <wsdl:output message="tns:ParametrosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Versiones">
+      <wsdl:input message="tns:VersionesSoapIn" />
+      <wsdl:output message="tns:VersionesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="registrarEquipo">
+      <wsdl:input message="tns:registrarEquipoSoapIn" />
+      <wsdl:output message="tns:registrarEquipoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ImeisFacturador">
+      <wsdl:input message="tns:ImeisFacturadorSoapIn" />
+      <wsdl:output message="tns:ImeisFacturadorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="enviarSMS">
+      <wsdl:input message="tns:enviarSMSSoapIn" />
+      <wsdl:output message="tns:enviarSMSSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="registrarImeis">
+      <wsdl:input message="tns:registrarImeisSoapIn" />
+      <wsdl:output message="tns:registrarImeisSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="setInstruccionesSql">
+      <wsdl:input message="tns:setInstruccionesSqlSoapIn" />
+      <wsdl:output message="tns:setInstruccionesSqlSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSCallCenterSoap" type="tns:WSCallCenterSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Lineas">
+      <soap:operation soapAction="http://Localhost/Lineas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Imeis">
+      <soap:operation soapAction="http://Localhost/Imeis" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ImeisActivos">
+      <soap:operation soapAction="http://Localhost/ImeisActivos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Empresas">
+      <soap:operation soapAction="http://Localhost/Empresas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TablasDescargar">
+      <soap:operation soapAction="http://Localhost/TablasDescargar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TablasIncluir">
+      <soap:operation soapAction="http://Localhost/TablasIncluir" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BuscarImei">
+      <soap:operation soapAction="http://Localhost/BuscarImei" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Parametros">
+      <soap:operation soapAction="http://Localhost/Parametros" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Versiones">
+      <soap:operation soapAction="http://Localhost/Versiones" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registrarEquipo">
+      <soap:operation soapAction="http://Localhost/registrarEquipo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ImeisFacturador">
+      <soap:operation soapAction="http://Localhost/ImeisFacturador" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="enviarSMS">
+      <soap:operation soapAction="http://Localhost/enviarSMS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registrarImeis">
+      <soap:operation soapAction="http://Localhost/registrarImeis" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setInstruccionesSql">
+      <soap:operation soapAction="http://Localhost/setInstruccionesSql" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WSCallCenterSoap12" type="tns:WSCallCenterSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Lineas">
+      <soap12:operation soapAction="http://Localhost/Lineas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Imeis">
+      <soap12:operation soapAction="http://Localhost/Imeis" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ImeisActivos">
+      <soap12:operation soapAction="http://Localhost/ImeisActivos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Empresas">
+      <soap12:operation soapAction="http://Localhost/Empresas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TablasDescargar">
+      <soap12:operation soapAction="http://Localhost/TablasDescargar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TablasIncluir">
+      <soap12:operation soapAction="http://Localhost/TablasIncluir" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BuscarImei">
+      <soap12:operation soapAction="http://Localhost/BuscarImei" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Parametros">
+      <soap12:operation soapAction="http://Localhost/Parametros" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Versiones">
+      <soap12:operation soapAction="http://Localhost/Versiones" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registrarEquipo">
+      <soap12:operation soapAction="http://Localhost/registrarEquipo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ImeisFacturador">
+      <soap12:operation soapAction="http://Localhost/ImeisFacturador" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="enviarSMS">
+      <soap12:operation soapAction="http://Localhost/enviarSMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registrarImeis">
+      <soap12:operation soapAction="http://Localhost/registrarImeis" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setInstruccionesSql">
+      <soap12:operation soapAction="http://Localhost/setInstruccionesSql" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WSCallCenter">
+    <wsdl:port name="WSCallCenterSoap" binding="tns:WSCallCenterSoap">
+      <soap:address location="http://medilab:1010/WSCallCenter.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WSCallCenterSoap12" binding="tns:WSCallCenterSoap12">
+      <soap12:address location="http://medilab:1010/WSCallCenter.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

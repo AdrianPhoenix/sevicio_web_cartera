@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generador de Carteras - Medinet</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container { 
+            max-width: 500px; 
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 32px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        h1 { 
+            color: #1e293b;
+            text-align: center; 
+            margin-bottom: 32px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .field { 
+            margin-bottom: 24px; 
+        }
+        
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 500; 
+            color: #374151;
+            font-size: 14px;
+        }
+        
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            color: #374151;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #1e40af;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+        
+        select:hover {
+            border-color: #cbd5e1;
+        }
+        
+        .checkbox-field { 
+            display: flex; 
+            align-items: center;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+        
+        .checkbox-field:hover {
+            border-color: #cbd5e1;
+        }
+        
+        .checkbox-field input[type="checkbox"] { 
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            accent-color: #1e40af;
+            cursor: pointer;
+        }
+        
+        .checkbox-field label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        button { 
+            background: #1e40af;
+            color: white; 
+            padding: 16px 24px; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer; 
+            width: 100%; 
+            margin-top: 8px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        button:hover:not(:disabled) { 
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.4);
+        }
+        
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        button:disabled { 
+            background: #9ca3af; 
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        #status { 
+            text-align: center; 
+            margin-top: 20px; 
+            padding: 16px; 
+            background: #dbeafe; 
+            border-radius: 8px; 
+            display: none;
+            color: #1e40af;
+            font-weight: 500;
+            border: 1px solid #bfdbfe;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        @@media (max-width: 640px) {
+            .container { margin: 20px auto; padding: 0 16px; }
+            .card { padding: 24px; }
+            .form-grid { grid-template-columns: 1fr; gap: 0; }
+            .form-grid .field { margin-bottom: 24px; }
+        }
+        
+        /* Loading state */
+        button.loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            margin: auto;
+            border: 2px solid transparent;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        @@keyframes spin {
+            0% { transform: translateY(-50%) rotate(0deg); }
+            100% { transform: translateY(-50%) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>🗂️ Generador de Carteras</h1>
+            
+            <form id="carteraForm">
+                <div class="field">
+                    <label for="visitador">Visitador</label>
+                    <select id="visitador" required>
+                        <option value="">Cargando visitadores...</option>
+                    </select>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="ano">Año</label>
+                        <select id="ano">
+                            <option value="2026" selected>2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                        </select>
+                    </div>
+                    
+                    <div class="field">
+                        <label for="ciclo">Ciclo</label>
+                        <select id="ciclo">
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="checkbox-field">
+                        <input type="checkbox" id="cicloAbierto" checked>
+                        <label for="cicloAbierto">Ciclo Abierto</label>
+                    </div>
+                </div>
+                
+                <button type="submit" id="generateBtn">
+                    Generar Cartera
+                </button>
+            </form>
+            
+            <div id="status">
+                Generando cartera...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cargar visitadores al iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarVisitadores();
+            cargarPreferencias();
+        });
+
+        // Cargar lista de visitadores
+        async function cargarVisitadores() {
+            try {
+                const response = await fetch('/api/visitador');
+                const visitadores = await response.json();
+                
+                const select = document.getElementById('visitador');
+                select.innerHTML = '<option value="">Seleccionar visitador...</option>';
+                
+                visitadores.forEach(v => {
+                    const option = document.createElement('option');
+                    option.value = v.iD_VisitadoresHistorial;
+                    option.textContent = `${v.iD_VisitadoresHistorial} - ${v.tX_Nombre} ${v.tX_Apellido}`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error cargando visitadores:', error);
+                document.getElementById('visitador').innerHTML = '<option value="">Error cargando visitadores</option>';
+            }
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('carteraForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const visitadorId = document.getElementById('visitador').value;
+            const ano = document.getElementById('ano').value;
+            const ciclo = document.getElementById('ciclo').value;
+            const cicloAbierto = document.getElementById('cicloAbierto').checked;
+            
+            if (!visitadorId) {
+                alert('Por favor selecciona un visitador');
+                return;
+            }
+            
+            // Guardar preferencias
+            guardarPreferencias();
+            
+            // Construir URL y descargar
+            const url = `/api/visitador/${visitadorId}/cartera-txt?ano=${ano}&ciclo=${ciclo}&cicloAbierto=${cicloAbierto}`;
+            
+            // Mostrar estado de carga
+            const btn = document.getElementById('generateBtn');
+            btn.classList.add('loading');
+            btn.disabled = true;
+            btn.textContent = 'Generando...';
+            document.getElementById('status').style.display = 'block';
+            
+            // Abrir URL directamente en nueva pestaña
+            window.open(url, '_blank');
+            
+            // Ocultar estado después de un momento
+            setTimeout(() => {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                btn.textContent = 'Generar Cartera';
+                document.getElementById('status').style.display = 'none';
+            }, 2000);
+        });
+
+        // Guardar preferencias en localStorage
+        function guardarPreferencias() {
+            const prefs = {
+                visitador: document.getElementById('visitador').value,
+                ano: document.getElementById('ano').value,
+                ciclo: document.getElementById('ciclo').value,
+                cicloAbierto: document.getElementById('cicloAbierto').checked
+            };
+            localStorage.setItem('carteraPrefs', JSON.stringify(prefs));
+        }
+
+        // Cargar preferencias guardadas
+        function cargarPreferencias() {
+            const prefs = localStorage.getItem('carteraPrefs');
+            if (prefs) {
+                const p = JSON.parse(prefs);
+                
+                // Esperar a que se carguen los visitadores
+                setTimeout(() => {
+                    if (p.visitador) document.getElementById('visitador').value = p.visitador;
+                    if (p.ano) document.getElementById('ano').value = p.ano;
+                    if (p.ciclo) document.getElementById('ciclo').value = p.ciclo;
+                    document.getElementById('cicloAbierto').checked = p.cicloAbierto;
+                }, 500);
+            }
+        }
+    </script>
+</body>
+</html>
