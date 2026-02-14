@@ -150,7 +150,9 @@ namespace WebApplication1.Services
                 while(await reader.ReadAsync())
                 {
                     string estatus = (reader.GetInt16(2) < ciclo) ? "C" : (reader.GetInt16(2) == ciclo) ? "A" : "P";
-                    contenido.AppendLine($"INSERT INTO Ciclos (FECHAI_CICLO,FECHAF_CICLO,NRO_CICLO,CICLO_CERRADO,DIAS_HABILES,ESTATUS) VALUES ('{reader.GetDateTime(3):dd/MM/yyyy}','{reader.GetDateTime(4):dd/MM/yyyy}',{reader.GetInt16(2)},'{estatus}',{reader.GetInt16(7)},'{estatus}');");
+                    int kpiVisitaMedica = reader.GetInt32(13);
+                    int kpiVisitaFarmacia = reader.GetInt32(14);
+                    contenido.AppendLine($"INSERT INTO Ciclos (FECHAI_CICLO,FECHAF_CICLO,NRO_CICLO,CICLO_CERRADO,DIAS_HABILES,ESTATUS,KPI_Visita_Medica,KPI_Visita_Farmacia) VALUES ('{reader.GetDateTime(3):dd/MM/yyyy}','{reader.GetDateTime(4):dd/MM/yyyy}',{reader.GetInt16(2)},'{estatus}',{reader.GetInt16(7)},'{estatus}',{kpiVisitaMedica},{kpiVisitaFarmacia});");
                 }
             }
             contenido.AppendLine("-- FIN: Pasos finales de configuración");
@@ -320,7 +322,7 @@ CREATE TABLE ""alteraciones"" (""REGISTRO"" TEXT(5), ""DOCTOR"" TEXT(40), ""RUTA
 DROP TABLE IF EXISTS ""banner"";
 CREATE TABLE ""banner"" (""CICLO"" INTEGER(11));
 DROP TABLE IF EXISTS ""ciclos"";
-CREATE TABLE ""ciclos"" (""FECHAI_CICLO"" TEXT(8), ""FECHAF_CICLO"" TEXT(8), ""NRO_CICLO"" INTEGER(11), ""CICLO_CERRADO"" TEXT(255), ""DIAS_HABILES"" INTEGER(11), ""ESTATUS"" TEXT(255), ""ANO"" integer(11));
+CREATE TABLE ""ciclos"" (""FECHAI_CICLO"" TEXT(8), ""FECHAF_CICLO"" TEXT(8), ""NRO_CICLO"" INTEGER(11), ""CICLO_CERRADO"" TEXT(255), ""DIAS_HABILES"" INTEGER(11), ""ESTATUS"" TEXT(255), ""ANO"" integer(11), ""KPI_Visita_Medica"" INTEGER(11), ""KPI_Visita_Farmacia"" INTEGER(11));
 DROP TABLE IF EXISTS ""ciclospropuesto"";
 CREATE TABLE ""ciclospropuesto"" (""FECHAINI"" TEXT(8), ""DIAI"" TEXT(10), ""FECHAFIN"" TEXT(8), ""DIAF"" TEXT(10), ""SEMANA"" TEXT(2), ""CICLO"" TEXT(2));
 DROP TABLE IF EXISTS ""cierreciclo"";

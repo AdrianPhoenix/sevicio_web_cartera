@@ -1,0 +1,162 @@
+Analizando archivos...
+
+================================================================================
+REPORTE PARA CORRECCIÓN DEL GENERADORSERVICE.CS
+================================================================================
+
+🎯 ACCIÓN REQUERIDA:
+   1. AGREGAR 25 tablas faltantes
+   2. ELIMINAR 26 tablas extras (errores)
+
+================================================================================
+📝 CÓDIGO PARA AGREGAR AL GeneradorService.cs
+================================================================================
+
+Agregar estas líneas en la variable 'todasLasDefiniciones':
+
+DROP TABLE IF EXISTS ""mw_esquemaspromocionales"";
+CREATE TABLE ""mw_esquemaspromocionales"" ("ID_EsquemaPromocional" INTEGER(11), "ID_Ciclo" INTEGER(11), "ID_Linea" INTEGER(11), "ID_Especialidad" INTEGER(11), "ID_Posicion" INTEGER(11), "ID_Marca" INTEGER(11), "FE_Registro" TEXT(8), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_farmaciasdroguerias"";
+CREATE TABLE ""mw_farmaciasdroguerias"" ("ID_FarmaciasDroguerias" INTEGER(11), "ID_Drogueria" INTEGER(11), "ID_Farmacia" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_galenicas"";
+CREATE TABLE ""mw_galenicas"" ("ID_Galenica" INTEGER(11), "TX_Galenica" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_idiomamedicos"";
+CREATE TABLE ""mw_idiomamedicos"" ("ID_Idioma" INTEGER(11), "TX_Idioma" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_instituciones"";
+CREATE TABLE ""mw_instituciones"" ("ID_Institucion" INTEGER(11), "TX_Institucion" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_laboratorios"";
+CREATE TABLE ""mw_laboratorios"" ("ID_Laboratorio" INTEGER(11), "TX_Laboratorio" TEXT(255), "BO_LaboratorioMedinet" INTEGER(11), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_lineasespecialidades"";
+CREATE TABLE ""mw_lineasespecialidades"" ("ID_LineasEspecialidades" INTEGER(11), "ID_Linea" INTEGER(11), "ID_Especialidad" INTEGER(11), "ID_CicloIni" INTEGER(11), "ID_CicloFin" INTEGER(11), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_lineasespecialidadesmarcas"";
+CREATE TABLE ""mw_lineasespecialidadesmarcas"" ("ID_LinEspMarcas" INTEGER(11), "ID_LineasEspecialidades" INTEGER(11), "ID_Marca" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_locacionbricks"";
+CREATE TABLE ""mw_locacionbricks"" ("ID_Brick" INTEGER(11), "NU_Brick" TEXT(8), "TX_Brick" TEXT(255), "BO_Activo" INTEGER(11), "ID_Ciudad" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_locacionciudades"";
+CREATE TABLE ""mw_locacionciudades"" ("ID_Ciudad" INTEGER(11), "TX_Ciudad" TEXT(255), "BO_Activo" INTEGER(11), "ID_Estado" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_locacionestados"";
+CREATE TABLE ""mw_locacionestados"" ("ID_Estado" INTEGER(11), "TX_Estado" TEXT(255), "BO_Activo" INTEGER(11), "ID_Pais" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_locacionpaises"";
+CREATE TABLE ""mw_locacionpaises"" ("ID_Pais" INTEGER(11), "TX_Pais" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_marcascompetencias"";
+CREATE TABLE ""mw_marcascompetencias"" ("ID_MarcasCompentencia" INTEGER(11), "ID_Marca" INTEGER(11), "ID_Competencia" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_marcaslineas"";
+CREATE TABLE ""mw_marcaslineas"" ("ID_MarcasLineas" INTEGER(11), "ID_Marca" INTEGER(11), "ID_Linea" INTEGER(11), "ID_CicloIni" INTEGER(11), "ID_CicloFin" INTEGER(11), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_motivovisitas"";
+CREATE TABLE ""mw_motivovisitas"" ("ID_Motivo" INTEGER(11), "TX_Motivo" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_ocupacionmedicos"";
+CREATE TABLE ""mw_ocupacionmedicos"" ("ID_Ocupacion" INTEGER(11), "TX_Ocupacion" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_patologias"";
+CREATE TABLE ""mw_patologias"" ("ID_Patologia" INTEGER(11), "TX_Patologia" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_posiciones"";
+CREATE TABLE ""mw_posiciones"" ("ID_Posicion" INTEGER(11), "TX_Posicion" TEXT(255), "TX_PosicionAbr" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_publicaciones"";
+CREATE TABLE ""mw_publicaciones"" ("ID_Publicacion" INTEGER(11), "TX_Publicacion" TEXT(255), "TX_Archivo" TEXT(255), "ID_Marca" INTEGER(11), "FE_Registro" TEXT(8), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_regionesestados"";
+CREATE TABLE ""mw_regionesestados"" ("ID_RegionesEstados" INTEGER(11), "ID_Region" INTEGER(11), "ID_Estado" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_serviciohospitales"";
+CREATE TABLE ""mw_serviciohospitales"" ("ID_Servicio" INTEGER(11), "TX_Servicio" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_solicitudvisitas"";
+CREATE TABLE ""mw_solicitudvisitas"" ("ID_Solicitud" INTEGER(11), "TX_Solicitud" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_tipovisitafarmacias"";
+CREATE TABLE ""mw_tipovisitafarmacias"" ("ID_TipoVisita" INTEGER(11), "TX_TipoVisita" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_tipovisitahospitales"";
+CREATE TABLE ""mw_tipovisitahospitales"" ("ID_TipoVisita" INTEGER(11), "TX_TipoVisita" TEXT(255), "BO_Activo" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_usuarios"";
+CREATE TABLE ""mw_usuarios"" ("ID_Usuario" INTEGER(11), "TX_Usuario" TEXT(255), "TX_Clave" TEXT(255), "NU_Cedula" INTEGER(11), "TX_Nombre" TEXT(255), "TX_Apellido" TEXT(255), "ID_Cargo" INTEGER(11), "TX_Email1" TEXT(255), "TX_Email2" TEXT(255), "TX_Telefono1" TEXT(255), "TX_Telefono2" TEXT(255), "TX_Direccion" TEXT(255), "ID_Ciudad" INTEGER(11), "TX_Imei" TEXT(255), "BO_Expiro" INTEGER(11), "FE_Registro" TEXT(8), "BO_Activo" INTEGER(11));
+
+================================================================================
+🗑️  TABLAS A ELIMINAR DEL GeneradorService.cs
+================================================================================
+
+Eliminar estas líneas de la variable 'todasLasDefiniciones':
+
+   - DROP TABLE IF EXISTS ""mw_ayuda_visual"";
+   - CREATE TABLE ""mw_ayuda_visual"" (...);
+   - DROP TABLE IF EXISTS ""mw_ayuda_visual_fe"";
+   - CREATE TABLE ""mw_ayuda_visual_fe"" (...);
+   - DROP TABLE IF EXISTS ""mw_ayuda_visual_mp4"";
+   - CREATE TABLE ""mw_ayuda_visual_mp4"" (...);
+   - DROP TABLE IF EXISTS ""mw_ayuda_visual_mp4_fe"";
+   - CREATE TABLE ""mw_ayuda_visual_mp4_fe"" (...);
+   - DROP TABLE IF EXISTS ""mw_configuracion"";
+   - CREATE TABLE ""mw_configuracion"" (...);
+   - DROP TABLE IF EXISTS ""MW_Empresas"";
+   - CREATE TABLE ""MW_Empresas"" (...);
+   - DROP TABLE IF EXISTS ""MW_EspecialidadesMedicas"";
+   - CREATE TABLE ""MW_EspecialidadesMedicas"" (...);
+   - DROP TABLE IF EXISTS ""MW_Estados"";
+   - CREATE TABLE ""MW_Estados"" (...);
+   - DROP TABLE IF EXISTS ""mw_farmacias_detalles_productos"";
+   - CREATE TABLE ""mw_farmacias_detalles_productos"" (...);
+   - DROP TABLE IF EXISTS ""mw_farmacias_personal"";
+   - CREATE TABLE ""mw_farmacias_personal"" (...);
+   - DROP TABLE IF EXISTS ""mw_hospital_detalles_medicos"";
+   - CREATE TABLE ""mw_hospital_detalles_medicos"" (...);
+   - DROP TABLE IF EXISTS ""mw_hospital_personal"";
+   - CREATE TABLE ""mw_hospital_personal"" (...);
+   - DROP TABLE IF EXISTS ""mw_inclusiones"";
+   - CREATE TABLE ""mw_inclusiones"" (...);
+   - DROP TABLE IF EXISTS ""mw_logs"";
+   - CREATE TABLE ""mw_logs"" (...);
+   - DROP TABLE IF EXISTS ""MW_Motivos"";
+   - CREATE TABLE ""MW_Motivos"" (...);
+   - DROP TABLE IF EXISTS ""MW_MotivosSolicitudes"";
+   - CREATE TABLE ""MW_MotivosSolicitudes"" (...);
+   - DROP TABLE IF EXISTS ""MW_ProductosLineas"";
+   - CREATE TABLE ""MW_ProductosLineas"" (...);
+   - DROP TABLE IF EXISTS ""mw_solicitudes"";
+   - CREATE TABLE ""mw_solicitudes"" (...);
+   - DROP TABLE IF EXISTS ""MW_TipoDescuentos"";
+   - CREATE TABLE ""MW_TipoDescuentos"" (...);
+   - DROP TABLE IF EXISTS ""mw_visita_detalles"";
+   - CREATE TABLE ""mw_visita_detalles"" (...);
+   - DROP TABLE IF EXISTS ""MW_Visitadores"";
+   - CREATE TABLE ""MW_Visitadores"" (...);
+   - DROP TABLE IF EXISTS ""MW_VisitadoresHistorial"";
+   - CREATE TABLE ""MW_VisitadoresHistorial"" (...);
+   - DROP TABLE IF EXISTS ""mw_visitas"";
+   - CREATE TABLE ""mw_visitas"" (...);
+   - DROP TABLE IF EXISTS ""MW_Zonas"";
+   - CREATE TABLE ""MW_Zonas"" (...);
+   - DROP TABLE IF EXISTS ""solicitudes_productos"";
+   - CREATE TABLE ""solicitudes_productos"" (...);
+   - DROP TABLE IF EXISTS ""visita_detalles_productos"";
+   - CREATE TABLE ""visita_detalles_productos"" (...);
+
+================================================================================
+⚠️  VERIFICACIÓN DE ESQUEMAS
+================================================================================
+
+⚠️  32 tablas con esquemas DIFERENTES que deben corregirse:
+
+   📋 ayuda_visual_FE:
+      ClickOne: "REGISTRO" TEXT(5), "ZONA" TEXT(7), "FECHA_VISITA" TEXT(10), "CICLO" INTEGER(11), "TIPO" TEXT(16), "...
+      Web:      "ID_AyudaVisualFE" INTEGER(11), "TX_AyudaVisualFE" TEXT(255), "TX_Ruta" TEXT(255), "ID_Linea" INTEGE...
+
+   📋 ayuda_visual_MP4:
+      ClickOne: "REGISTRO" TEXT(5), "ZONA" TEXT(7), "FECHA_VISITA" TEXT(10), "CICLO" INTEGER(11), "TIPO" TEXT(16), "...
+      Web:      "ID_AyudaVisualMP4" INTEGER(11), "TX_AyudaVisualMP4" TEXT(255), "TX_Ruta" TEXT(255), "ID_Linea" INTE...
+
+   📋 ayuda_visual_MP4_FE:
+      ClickOne: "REGISTRO" TEXT(5), "ZONA" TEXT(7), "FECHA_VISITA" TEXT(10), "CICLO" INTEGER(11), "TIPO" TEXT(16), "...
+      Web:      "ID_AyudaVisualMP4FE" INTEGER(11), "TX_AyudaVisualMP4FE" TEXT(255), "TX_Ruta" TEXT(255), "ID_Linea" ...
+
+   📋 farmacias_detalles_productos:
+      ClickOne: "NUMERO" INTEGER(11), "CICLO_VISITA" INTEGER(11), "ZONA" TEXT(7), "FARMACIA" TEXT(255), "FECHA_VISIT...
+      Web:      "NUMERO" INTEGER(11), "CICLO_VISITA" INTEGER(11), "ZONA" TEXT(7), "FARMACIA" TEXT(255), "FECHA_VISIT...
+
+   📋 farmacias_personal:
+      ClickOne: "ID" INTEGER(11), "NUMERO" INTEGER(11), "ZONA" TEXT(7), "NOMBRE" TEXT(40), "CARGO" TEXT(40), "TELEFO...
+      Web:      "NUMERO" INTEGER(11), "ZONA" TEXT(7), "FARMACIA" TEXT(100), "PERSONAL" TEXT(100), "CARGO" TEXT(50), ...
+
+================================================================================
+RESUMEN FINAL:
+================================================================================
+✅ Tablas correctas: 57
+⚠️  Tablas con esquemas incorrectos: 32
+❌ Tablas faltantes: 25
+🗑️  Tablas extras (eliminar): 26
+
+🎯 TOTAL DE CAMBIOS NECESARIOS: 83
+================================================================================

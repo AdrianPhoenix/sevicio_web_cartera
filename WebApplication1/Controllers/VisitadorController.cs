@@ -113,5 +113,30 @@ namespace WebApplication1.Controllers
                 return StatusCode(500, $"Error obteniendo Google Registration ID: {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Obtiene los KPIs de un visitador para un ciclo y año específico
+        /// </summary>
+        [HttpGet("{id}/kpis")]
+        public async Task<ActionResult<KpiResponse>> GetKpis(long id, [FromQuery] int ano = 0, [FromQuery] int ciclo = 1)
+        {
+            try
+            {
+                if (ano == 0) ano = DateTime.Now.Year;
+
+                var kpis = await _dataService.ObtenerKpisAsync(id, ano, ciclo);
+                
+                if (kpis == null)
+                {
+                    return NotFound($"No se encontraron KPIs para el visitador {id}, año {ano}, ciclo {ciclo}");
+                }
+
+                return Ok(kpis);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error obteniendo KPIs: {ex.Message}");
+            }
+        }
     }
 }

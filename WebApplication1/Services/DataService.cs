@@ -148,5 +148,58 @@ namespace WebApplication1.Services
             var result = await command.ExecuteScalarAsync();
             return result?.ToString() ?? string.Empty;
         }
+
+        public async Task<KpiResponse?> ObtenerKpisAsync(long visitadorId, int ano, int ciclo)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            var query = @"SELECT 
+                            ID_Ciclo,
+                            NU_Ano,
+                            NU_Ciclo,
+                            FE_CicloIni,
+                            FE_CicloFin,
+                            NU_DiasHabiles,
+                            NU_Estatus,
+                            KPI_Visita_Medica,
+                            KPI_Visita_Farmacia
+                          FROM MW_Ciclos 
+                          WHERE NU_Ano = @ano AND NU_Ciclo = @ciclo";
+
+            using var command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@ano", ano);
+            command.Parameters.AddWithValue("@ciclo", ciclo);
+
+            using var reader = await command.ExecuteReaderAsync();
+
+            if (await reader.ReadAsync())
+            {
+                // Determinar el estatus basado en NU_Estatus
+                // 1 = Activo (A), 2 = Cerrado (C), 3 = Pendiente (P)
+                int estatusNum = reader.GetInt16(6);
+                string estatus = estatusNum switch
+                {
+                    1 => "A", // Activo
+                    2 => "C", // Cerrado
+                    _ => "P"  // Pendiente
+                };
+
+                return new KpiResponse
+                {
+                    VisitadorId = visitadorId,
+                    Ano = reader.GetInt16(1),
+                    Ciclo = reader.GetInt16(2),
+                    FechaInicio = reader.GetDateTime(3).ToString("dd/MM/yyyy"),
+                    FechaFin = reader.GetDateTime(4).ToString("dd/MM/yyyy"),
+                    DiasHabiles = reader.GetInt16(5),
+                    Estatus = estatus,
+                    KpiVisitaMedica = reader.GetInt32(7),
+                    KpiVisitaFarmacia = reader.GetInt32(8)
+                };
+            }
+
+            return null;
+        }
     }
 }
