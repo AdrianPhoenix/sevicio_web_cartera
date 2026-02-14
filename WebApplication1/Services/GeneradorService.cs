@@ -265,17 +265,35 @@ namespace WebApplication1.Services
             var finalColumns = new List<string>();
             foreach (var col in columnNames)
             {
-                // Para cierreciclo, incluir la columna CICLO
-                bool excluirCiclo = !col.Equals("NU_ANO", StringComparison.OrdinalIgnoreCase) && 
-                                    !col.Equals("NU_CICLO", StringComparison.OrdinalIgnoreCase) &&
-                                    !(col.Equals("CICLO", StringComparison.OrdinalIgnoreCase) && nombreTablaSqlite != "cierreciclo");
-                
-                if (excluirCiclo &&
-                    !(nombreTablaSqlite == "ayuda_visual" && (col.Equals("REGISTRO", StringComparison.OrdinalIgnoreCase) || 
-                                                             col.Equals("ZONA", StringComparison.OrdinalIgnoreCase))))
+                // Excluir NU_ANO y NU_CICLO siempre
+                if (col.Equals("NU_ANO", StringComparison.OrdinalIgnoreCase) || 
+                    col.Equals("NU_CICLO", StringComparison.OrdinalIgnoreCase))
                 {
-                    finalColumns.Add(col);
+                    continue;
                 }
+                
+                // Para cierreciclo, solicitudes y hsolicitudes, INCLUIR la columna CICLO
+                bool esCiclo = col.Equals("CICLO", StringComparison.OrdinalIgnoreCase);
+                bool tablaPermiteCiclo = nombreTablaSqlite == "cierreciclo" || 
+                                        nombreTablaSqlite == "solicitudes" || 
+                                        nombreTablaSqlite == "hsolicitudes";
+                
+                // Si es CICLO y la tabla NO permite CICLO, excluir
+                if (esCiclo && !tablaPermiteCiclo)
+                {
+                    continue;
+                }
+                
+                // Excluir REGISTRO y ZONA solo para ayuda_visual
+                if (nombreTablaSqlite == "ayuda_visual" && 
+                    (col.Equals("REGISTRO", StringComparison.OrdinalIgnoreCase) || 
+                     col.Equals("ZONA", StringComparison.OrdinalIgnoreCase)))
+                {
+                    continue;
+                }
+                
+                // Si llegamos aquí, incluir la columna
+                finalColumns.Add(col);
             }
             
             if (!finalColumns.Any()) return;
