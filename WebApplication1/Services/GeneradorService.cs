@@ -150,9 +150,10 @@ namespace WebApplication1.Services
                 while(await reader.ReadAsync())
                 {
                     string estatus = (reader.GetInt16(2) < ciclo) ? "C" : (reader.GetInt16(2) == ciclo) ? "A" : "P";
+                    int anoValue = reader.GetInt16(1); // NU_Ano
                     int kpiVisitaMedica = reader.GetInt32(13);
                     int kpiVisitaFarmacia = reader.GetInt32(14);
-                    contenido.AppendLine($"INSERT INTO Ciclos (FECHAI_CICLO,FECHAF_CICLO,NRO_CICLO,CICLO_CERRADO,DIAS_HABILES,ESTATUS,KPI_Visita_Medica,KPI_Visita_Farmacia) VALUES ('{reader.GetDateTime(3):dd/MM/yyyy}','{reader.GetDateTime(4):dd/MM/yyyy}',{reader.GetInt16(2)},'{estatus}',{reader.GetInt16(7)},'{estatus}',{kpiVisitaMedica},{kpiVisitaFarmacia});");
+                    contenido.AppendLine($"INSERT INTO Ciclos (FECHAI_CICLO,FECHAF_CICLO,NRO_CICLO,CICLO_CERRADO,DIAS_HABILES,ESTATUS,ANO,KPI_Visita_Medica,KPI_Visita_Farmacia) VALUES ('{reader.GetDateTime(3):dd/MM/yyyy}','{reader.GetDateTime(4):dd/MM/yyyy}',{reader.GetInt16(2)},'{estatus}',{reader.GetInt16(7)},'{estatus}',{anoValue},{kpiVisitaMedica},{kpiVisitaFarmacia});");
                 }
             }
             contenido.AppendLine("-- FIN: Pasos finales de configuración");
