@@ -273,11 +273,13 @@ namespace WebApplication1.Services
                     continue;
                 }
                 
-                // Para cierreciclo, solicitudes y hsolicitudes, INCLUIR la columna CICLO
+                // Para cierreciclo, solicitudes, hsolicitudes, visitas y hvisitas, INCLUIR la columna CICLO
                 bool esCiclo = col.Equals("CICLO", StringComparison.OrdinalIgnoreCase);
                 bool tablaPermiteCiclo = nombreTablaSqlite == "cierreciclo" || 
                                         nombreTablaSqlite == "solicitudes" || 
-                                        nombreTablaSqlite == "hsolicitudes";
+                                        nombreTablaSqlite == "hsolicitudes" ||
+                                        nombreTablaSqlite == "visitas" ||
+                                        nombreTablaSqlite == "hvisitas";
                 
                 // Si es CICLO y la tabla NO permite CICLO, excluir
                 if (esCiclo && !tablaPermiteCiclo)
