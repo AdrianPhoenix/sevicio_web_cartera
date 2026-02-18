@@ -5,6 +5,49 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 
+## [4.1.0] - 2026-02-17
+
+### 🔧 Corregido
+
+#### Issue #007: Columna CICLO faltante en hoja_ruta y hoja_ruta_propuesta
+- **Problema:** Las tablas hoja_ruta y hoja_ruta_propuesta NO incluían CICLO en INSERT statements
+- **Causa:** Tablas no estaban en la lista de tablas que permiten CICLO
+- **Solución:** Agregadas ambas tablas a la lista `tablaPermiteCiclo`
+- **Archivo:** `WebApplication1/Services/GeneradorService.cs` (líneas ~277-283)
+- **Documentación:** `docs/issues/ISSUE_007_CICLO_HOJA_RUTA.md`
+- **Impacto:** Permite filtrar hojas de ruta por ciclo en la app Android
+
+#### Corrección de 15 tablas con columnas faltantes
+- **Problema:** 15 tablas críticas tenían columnas faltantes que causaban errores en la app Android
+- **Solución:** Agregadas 76 columnas en total en 15 tablas
+- **Tablas corregidas:**
+  - **Prioridad Alta (8 tablas):** mw_farmacias, mw_hospitales, pedidosfarmacias, ayuda_visual_fe, ayuda_visual_mp4, ayuda_visual_mp4_fe, mw_drogueriasproductos, mw_pedidosfacturascabeceras
+  - **Prioridad Media (7 tablas):** temp_hoja_ruta_propuesta, mw_marcas, mw_medicos, mw_pedidosfacturasdetalles, mw_especialidades, mw_lineas, mw_regiones
+- **Archivo:** `WebApplication1/Services/GeneradorService.cs`
+- **Documentación:** `docs/CORRECCIONES_FINALIZADAS.md`
+- **Carteras generadas:** Cartera_zona_343_2.txt hasta Cartera_zona_343_6.txt
+
+#### Corrección de nomenclatura (mayúsculas/minúsculas)
+- **Problema:** 4 tablas estaban definidas con prefijo MW_ (mayúsculas) cuando en ClickOne están en minúsculas (mw_)
+- **Solución:** Corregidos nombres de tablas para mantener consistencia con ClickOne
+- **Tablas corregidas:**
+  - `MW_Lineas` → `mw_lineas`
+  - `MW_Marcas` → `mw_marcas`
+  - `MW_Regiones` → `mw_regiones`
+  - `MW_TipoMedicos` → `mw_tipomedicos`
+- **Corrección adicional:** FOREIGN KEY en MW_ProductosLineas actualizada para apuntar a `mw_lineas`
+- **Archivo:** `WebApplication1/Services/GeneradorService.cs`
+- **Documentación:** `docs/CORRECCION_NOMENCLATURA.md`
+- **Cartera generada:** Cartera_zona_343_7.txt
+
+### 📊 Impacto
+- ✅ 76 columnas agregadas en 15 tablas críticas
+- ✅ 4 tablas con nomenclatura corregida
+- ✅ Consistencia 100% con ClickOne
+- ✅ Funcionalidad completa de la app Android restaurada
+
+---
+
 ## [4.0.1] - 2026-02-16
 
 ### 🐛 Corregido

@@ -4,7 +4,8 @@ Documentación de despliegues y procedimientos de publicación.
 
 ## 📋 Historial de Despliegues
 
-- **[14 de Febrero, 2026](DESPLIEGUE_14_FEB_2026.md)** - Endpoint KPIs + Fixes Issues #002, #004, #006
+- **[17 de Febrero, 2026](DESPLIEGUE_17_FEB_2026.md)** - v4.1.0: Correcciones de estructura (15 tablas, 76 columnas), nomenclatura (4 tablas) y datos (CICLO en 2 tablas) ✅ ACTUAL
+- **[14 de Febrero, 2026](DESPLIEGUE_14_FEB_2026.md)** - v4.0.1: Endpoint KPIs + Fixes Issues #002, #004, #006
 
 ## 🎯 Proceso de Deployment
 

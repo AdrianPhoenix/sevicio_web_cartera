@@ -273,13 +273,15 @@ namespace WebApplication1.Services
                     continue;
                 }
                 
-                // Para cierreciclo, solicitudes, hsolicitudes, visitas y hvisitas, INCLUIR la columna CICLO
+                // Para cierreciclo, solicitudes, hsolicitudes, visitas, hvisitas, hoja_ruta y hoja_ruta_propuesta, INCLUIR la columna CICLO
                 bool esCiclo = col.Equals("CICLO", StringComparison.OrdinalIgnoreCase);
                 bool tablaPermiteCiclo = nombreTablaSqlite == "cierreciclo" || 
                                         nombreTablaSqlite == "solicitudes" || 
                                         nombreTablaSqlite == "hsolicitudes" ||
                                         nombreTablaSqlite == "visitas" ||
-                                        nombreTablaSqlite == "hvisitas";
+                                        nombreTablaSqlite == "hvisitas" ||
+                                        nombreTablaSqlite == "hoja_ruta" ||
+                                        nombreTablaSqlite == "hoja_ruta_propuesta";
                 
                 // Si es CICLO y la tabla NO permite CICLO, excluir
                 if (esCiclo && !tablaPermiteCiclo)
@@ -442,24 +444,24 @@ DROP TABLE IF EXISTS ""MW_EspecialidadesMedicas"";
 CREATE TABLE ""MW_EspecialidadesMedicas"" (""ID_Especialidad"" INTEGER(11), ""TX_Especialidad"" TEXT(255), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_Estados"";
 CREATE TABLE ""MW_Estados"" (""ID_Estado"" INTEGER(11), ""TX_Estado"" TEXT(255), ""BO_Activo"" INTEGER(11));
-DROP TABLE IF EXISTS ""MW_Lineas"";
-CREATE TABLE ""MW_Lineas"" (""ID_Linea"" INTEGER(11), ""TX_Linea"" TEXT(255), ""BO_Activo"" INTEGER(11));
-DROP TABLE IF EXISTS ""MW_Marcas"";
-CREATE TABLE ""MW_Marcas"" (""ID_Marca"" INTEGER(11), ""TX_Marca"" TEXT(255), ""BO_Activo"" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_lineas"";
+CREATE TABLE ""mw_lineas"" (""ID_Linea"" INTEGER(11), ""TX_Linea"" TEXT(255), ""TX_LineaAbr"" TEXT(255), ""BO_Activo"" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_marcas"";
+CREATE TABLE ""mw_marcas"" (""ID_Marca"" INTEGER(11), ""TX_Marca"" TEXT(255), ""ID_Laboratorio"" INTEGER(11), ""TX_Posicionamiento"" TEXT(400), ""FE_Registro"" TEXT(8), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_Motivos"";
 CREATE TABLE ""MW_Motivos"" (""ID_Motivo"" INTEGER(11), ""TX_Motivo"" TEXT(255), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_MotivosSolicitudes"";
 CREATE TABLE ""MW_MotivosSolicitudes"" (""ID_MotivoSolicitud"" INTEGER(11), ""TX_MotivoSolicitud"" TEXT(255), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_Productos"";
-CREATE TABLE ""MW_Productos"" (""ID_Producto""  INTEGER NOT NULL, ""TX_Producto""  TEXT(50) NOT NULL, ""TX_ProductoDesc""  TEXT(100), ""ID_Linea""  INTEGER NOT NULL, ""ID_Marca""  INTEGER NOT NULL, ""BO_Activo""  INTEGER NOT NULL, PRIMARY KEY (""ID_Producto""), FOREIGN KEY (""ID_Linea"") REFERENCES ""MW_Lineas"" (""ID_Linea""), FOREIGN KEY (""ID_Marca"") REFERENCES ""MW_Marcas"" (""ID_Marca""));
+CREATE TABLE ""MW_Productos"" (""ID_Producto""  INTEGER NOT NULL, ""ID_Marca""  INTEGER NOT NULL, ""TX_Producto""  TEXT(150) NOT NULL, ""TX_IDProductoCliente""  TEXT(15) NOT NULL, ""TX_ProductoDesc""  TEXT(250) NOT NULL, ""BO_Activo""  INTEGER NOT NULL, PRIMARY KEY (""ID_Producto"" ASC));
 DROP TABLE IF EXISTS ""MW_ProductosLineas"";
-CREATE TABLE ""MW_ProductosLineas"" (""ID_ProductoLinea""  INTEGER NOT NULL, ""ID_Producto""  INTEGER NOT NULL, ""ID_Linea""  INTEGER NOT NULL, ""BO_Activo""  INTEGER NOT NULL, PRIMARY KEY (""ID_ProductoLinea""), FOREIGN KEY (""ID_Producto"") REFERENCES ""MW_Productos"" (""ID_Producto""), FOREIGN KEY (""ID_Linea"") REFERENCES ""MW_Lineas"" (""ID_Linea""));
-DROP TABLE IF EXISTS ""MW_Regiones"";
-CREATE TABLE ""MW_Regiones"" (""ID_Region"" INTEGER(11), ""TX_Region"" TEXT(255), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""MW_ProductosLineas"" (""ID_ProductoLinea""  INTEGER NOT NULL, ""ID_Producto""  INTEGER NOT NULL, ""ID_Linea""  INTEGER NOT NULL, ""BO_Activo""  INTEGER NOT NULL, PRIMARY KEY (""ID_ProductoLinea""), FOREIGN KEY (""ID_Producto"") REFERENCES ""MW_Productos"" (""ID_Producto""), FOREIGN KEY (""ID_Linea"") REFERENCES ""mw_lineas"" (""ID_Linea""));
+DROP TABLE IF EXISTS ""mw_regiones"";
+CREATE TABLE ""mw_regiones"" (""ID_Region"" INTEGER(11), ""TX_Region"" TEXT(255), ""TX_RegionAbr"" TEXT(255), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_TipoDescuentos"";
 CREATE TABLE ""MW_TipoDescuentos"" (""ID_TipoDescuento""  INTEGER NOT NULL, ""TX_TipoDescuento""  TEXT(50) NOT NULL, ""NU_Descuento""  REAL(4,2) NOT NULL, ""BO_Activo""  INTEGER NOT NULL, PRIMARY KEY (""ID_TipoDescuento""));
-DROP TABLE IF EXISTS ""MW_TipoMedicos"";
-CREATE TABLE ""MW_TipoMedicos"" (""ID_TipoMedico"" INTEGER(11), ""TX_TipoMedico"" TEXT(255), ""BO_Activo"" INTEGER(11));
+DROP TABLE IF EXISTS ""mw_tipomedicos"";
+CREATE TABLE ""mw_tipomedicos"" (""ID_TipoMedico"" INTEGER(11), ""TX_TipoMedico"" TEXT(255), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_Visitadores"";
 CREATE TABLE ""MW_Visitadores"" (""ID_Visitador"" INTEGER(11), ""TX_Nombre"" TEXT(255), ""TX_Apellido"" TEXT(255), ""TX_Usuario"" TEXT(255), ""TX_Password"" TEXT(255), ""ID_Empresa"" INTEGER(11), ""ID_Linea"" INTEGER(11), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_VisitadoresHistorial"";
@@ -471,9 +473,9 @@ CREATE TABLE ""solicitudes"" (""REGISTRO"" TEXT(5), ""DOCTOR"" TEXT(40), ""ZONA"
 DROP TABLE IF EXISTS ""solicitudes_productos"";
 CREATE TABLE ""solicitudes_productos"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""CICLO"" INTEGER(11), ""PRODUCTO"" TEXT(255), ""CANTIDAD"" INTEGER(11), ""MOTIVO"" TEXT(255), ""COMENTARIOS"" TEXT(255));
 DROP TABLE IF EXISTS ""visitas"";
-CREATE TABLE ""visitas"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(16), ""MOTIVO"" TEXT(20), ""PASADO_DESKTOP"" TEXT(1), ""PASADO_INTERNET"" TEXT(1), ""FECHA_SISTEMA"" TEXT(20), ""HORA_SISTEMA"" TEXT(20));
+CREATE TABLE ""visitas"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(16), ""MOTIVO"" TEXT(20), ""PASADO_DESKTOP"" TEXT(1), ""PASADO_INTERNET"" TEXT(1), ""FECHA_SISTEMA"" TEXT(255), ""HORA_SISTEMA"" TEXT(8));
 DROP TABLE IF EXISTS ""visita_detalles"";
-CREATE TABLE ""visita_detalles"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(50), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(11), ""PRODUCTO"" TEXT(255), ""MUETRAS"" INTEGER(11), ""MATERIAL_PRO"" INTEGER(11), ""MATERIAL_POP"" INTEGER(11), ""CARACTERISTICAS"" TEXT(35), ""BENEFICIOS"" TEXT(35), ""PRESENTACION"" TEXT(15), ""SOLICITA"" TEXT(25), ""SOLICITA_DETALLE"" TEXT(200), ""PRESCRIBE"" TEXT(25), ""NO_UTILIZA"" TEXT(20), ""PRESCRIBE_CARACTERISTICAS"" TEXT(35), ""PRESCRIBE_BENEFICIO"" TEXT(35));
+CREATE TABLE ""visita_detalles"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(50), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(11), ""PRODUCTO"" TEXT(30), ""MUETRAS"" INTEGER(11), ""MATERIAL_PRO"" INTEGER(11), ""MATERIAL_POP"" INTEGER(11), ""CARACTERISTICAS"" TEXT(35), ""BENEFICIOS"" TEXT(35), ""PRESENTACION"" TEXT(15), ""SOLICITA"" TEXT(25), ""SOLICITA_DETALLE"" TEXT(200), ""PRESCRIBE"" TEXT(25), ""NO_UTILIZA"" TEXT(20), ""PRESCRIBE_CARACTERISTICAS"" TEXT(35), ""PRESCRIBE_BENEFICIO"" TEXT(35));
 DROP TABLE IF EXISTS ""visita_detalles_productos"";
 CREATE TABLE ""visita_detalles_productos"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(11), ""PRODUCTO"" TEXT(255), ""MUETRAS"" INTEGER(11), ""MATERIAL_PRO"" INTEGER(11), ""MATERIAL_POP"" INTEGER(11), ""CARACTERISTICAS"" TEXT(35), ""BENEFICIOS"" TEXT(35), ""PRESENTACION"" TEXT(15), ""SOLICITA"" TEXT(25), ""SOLICITA_DETALLE"" TEXT(200), ""PRESCRIBE"" TEXT(25), ""NO_UTILIZA"" TEXT(20), ""PRESCRIBE_CARACTERISTICAS"" TEXT(35), ""PRESCRIBE_BENEFICIO"" TEXT(35));
 DROP TABLE IF EXISTS ""mw_farmacias_detalles_productos"";
@@ -505,41 +507,41 @@ CREATE TABLE ""mw_configuracion"" (""ID_Config"" INTEGER(11), ""TX_Parametro"" T
 DROP TABLE IF EXISTS ""mw_logs"";
 CREATE TABLE ""mw_logs"" (""ID_Log"" INTEGER(11), ""FE_Fecha"" TEXT(20), ""TX_Accion"" TEXT(100), ""TX_Detalle"" TEXT(255), ""ID_Usuario"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_DrogueriasProductos"";
-CREATE TABLE ""MW_DrogueriasProductos"" (""ID_DrogueriaProducto"" INTEGER(11), ""ID_Drogueria"" INTEGER(11), ""ID_Producto"" INTEGER(11), ""TX_CodigoProducto"" TEXT(50), ""NU_Precio"" REAL(8,2), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""MW_DrogueriasProductos"" (""ID_DrogueriaProducto"" INTEGER NOT NULL, ""ID_DrogueriaAlmacen"" INTEGER NOT NULL, ""ID_Producto"" INTEGER, ""TX_IDProductoDrogueria"" TEXT(15) NOT NULL, ""TX_ProductoDrogueria"" TEXT(150) NOT NULL, ""NU_PrecioProducto"" REAL(10,2) NOT NULL, ""NU_InvProducto"" INTEGER NOT NULL, ""TX_DrogueriaRef1"" TEXT(50), ""TX_DrogueriaRef2"" TEXT(50), ""BO_Activo"" INTEGER NOT NULL, PRIMARY KEY (""ID_DrogueriaProducto""), FOREIGN KEY (""ID_DrogueriaAlmacen"") REFERENCES ""MW_DrogueriasAlmacenes"" (""ID_DrogueriaAlmacen""), FOREIGN KEY (""ID_Producto"") REFERENCES ""MW_Productos"" (""ID_Producto""));
 DROP TABLE IF EXISTS ""MW_PedidosEstatus"";
 CREATE TABLE ""MW_PedidosEstatus"" (""ID_PedidoEstatus"" INTEGER(11), ""TX_PedidoEstatus"" TEXT(50), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_PedidosEstatusProcesado"";
 CREATE TABLE ""MW_PedidosEstatusProcesado"" (""ID_PedidoEstatusProcesado"" INTEGER(11), ""TX_PedidoEstatusProcesado"" TEXT(50), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_PedidosFacturasCabeceras"";
-CREATE TABLE ""MW_PedidosFacturasCabeceras"" (""ID_FacturaCabecera"" INTEGER(11), ""ID_Pedido"" INTEGER(11), ""TX_NumeroFactura"" TEXT(50), ""FE_Factura"" TEXT(10), ""NU_MontoTotal"" REAL(10,2), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""MW_PedidosFacturasCabeceras"" (""ID_FacturaMedinet"" INTEGER NOT NULL, ""ID_PedidoMedinet"" INTEGER NOT NULL, ""ID_Drogueria"" INTEGER NOT NULL, ""NU_FacturaDrogueria"" INTEGER NOT NULL, ""NU_PedidoDrogueria"" INTEGER, ""FE_FacturaDrogueria"" TEXT NOT NULL, ""NU_TotalUnidades"" INTEGER, ""NU_CostoTotalFactura"" REAL(18,4) NOT NULL, ""FE_Recibido"" TEXT, ""FE_Modificado"" TEXT, PRIMARY KEY (""ID_FacturaMedinet""));
 DROP TABLE IF EXISTS ""MW_PedidosFacturasDetalles"";
-CREATE TABLE ""MW_PedidosFacturasDetalles"" (""ID_FacturaDetalle"" INTEGER(11), ""ID_FacturaCabecera"" INTEGER(11), ""ID_Producto"" INTEGER(11), ""NU_Cantidad"" INTEGER(11), ""NU_PrecioUnitario"" REAL(8,2), ""NU_MontoLinea"" REAL(10,2));
+CREATE TABLE ""MW_PedidosFacturasDetalles"" (""ID_Detalle"" INTEGER NOT NULL, ""ID_FacturaMedinet"" INTEGER NOT NULL, ""ID_Producto"" INTEGER NOT NULL, ""TX_IDProductoDrogueria"" TEXT(15) NOT NULL, ""TX_Lote"" TEXT(50), ""NU_CantidadFacturada"" INTEGER NOT NULL, ""FE_Recibido"" TEXT, ""FE_Modificado"" TEXT, PRIMARY KEY (""ID_Detalle""));
 DROP TABLE IF EXISTS ""PedidosCodVisDrog"";
 CREATE TABLE ""PedidosCodVisDrog"" (""ID_Visitador"" INTEGER(11), ""ID_Drogueria"" INTEGER(11), ""TX_Codigo"" TEXT(20), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""PedidosCorreosVisCopia"";
 CREATE TABLE ""PedidosCorreosVisCopia"" (""ID_Visitador"" INTEGER(11), ""TX_Email"" TEXT(100), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""PedidosFarmacias"";
-CREATE TABLE ""PedidosFarmacias"" (""ID_Farmacia"" INTEGER(11), ""ID_Visitador"" INTEGER(11), ""TX_CodigoFarmacia"" TEXT(50), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""PedidosFarmacias"" (""ID_VisitadorHistorial"" INTEGER, ""ID_Farmacia"" INTEGER PRIMARY KEY AUTOINCREMENT, ""ID_DrogueriaAlmacen"" INTEGER, ""ID_CadenaFarmacias"" INTEGER, ""ID_Clasificacion"" INTEGER, ""ID_Estado"" INTEGER, ""NU_Brick"" INTEGER, ""TX_Farmacia"" TEXT(50), ""TX_Direccion"" TEXT(250), ""TX_Contacto"" TEXT(50), ""TX_Telefono"" TEXT(11), ""TX_Rif"" TEXT(11), ""BO_Activo"" INTEGER);
 DROP TABLE IF EXISTS ""ayuda_visual"";
 CREATE TABLE ""ayuda_visual"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(16), ""MOTIVO"" TEXT(20), ""ESPECIALIDAD"" TEXT(25), ""CLASIFICACION"" TEXT(2), ""FECHA_SISTEMA"" TEXT(10), ""HORA_SISTEMA"" TEXT(8), ""PRODUCTO"" TEXT(30), ""POSICION"" TEXT(2), ""ORDEN"" INTEGER(11));
 DROP TABLE IF EXISTS ""ayuda_visual_FE"";
-CREATE TABLE ""ayuda_visual_FE"" (""ID_AyudaVisualFE"" INTEGER(11), ""TX_AyudaVisualFE"" TEXT(255), ""TX_Ruta"" TEXT(255), ""ID_Linea"" INTEGER(11), ""ID_Marca"" INTEGER(11), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""ayuda_visual_FE"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(16), ""MOTIVO"" TEXT(20), ""ESPECIALIDAD"" TEXT(25), ""CLASIFICACION"" TEXT(2), ""FECHA_SISTEMA"" TEXT(10), ""HORA_SISTEMA"" TEXT(8), ""PRODUCTO"" TEXT(30), ""POSICION"" TEXT(2), ""ORDEN"" INTEGER(11));
 DROP TABLE IF EXISTS ""ayuda_visual_MP4"";
-CREATE TABLE ""ayuda_visual_MP4"" (""ID_AyudaVisualMP4"" INTEGER(11), ""TX_AyudaVisualMP4"" TEXT(255), ""TX_Ruta"" TEXT(255), ""ID_Linea"" INTEGER(11), ""ID_Marca"" INTEGER(11), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""ayuda_visual_MP4"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(16), ""MOTIVO"" TEXT(20), ""ESPECIALIDAD"" TEXT(25), ""CLASIFICACION"" TEXT(2), ""FECHA_SISTEMA"" TEXT(10), ""HORA_SISTEMA"" TEXT(8), ""PRODUCTO"" TEXT(30), ""POSICION"" TEXT(2), ""ORDEN"" INTEGER(11));
 DROP TABLE IF EXISTS ""ayuda_visual_MP4_FE"";
-CREATE TABLE ""ayuda_visual_MP4_FE"" (""ID_AyudaVisualMP4FE"" INTEGER(11), ""TX_AyudaVisualMP4FE"" TEXT(255), ""TX_Ruta"" TEXT(255), ""ID_Linea"" INTEGER(11), ""ID_Marca"" INTEGER(11), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""ayuda_visual_MP4_FE"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(16), ""MOTIVO"" TEXT(20), ""ESPECIALIDAD"" TEXT(25), ""CLASIFICACION"" TEXT(2), ""FECHA_SISTEMA"" TEXT(10), ""HORA_SISTEMA"" TEXT(8), ""PRODUCTO"" TEXT(30), ""POSICION"" TEXT(2), ""ORDEN"" INTEGER(11));
 DROP TABLE IF EXISTS ""farmacias_detalles_productos"";
 CREATE TABLE ""farmacias_detalles_productos"" (""NUMERO"" INTEGER(11), ""CICLO_VISITA"" INTEGER(11), ""ZONA"" TEXT(7), ""FARMACIA"" TEXT(255), ""FECHA_VISITA"" TEXT(255), ""MOTIVO"" TEXT(255), ""PRODUCTO"" TEXT(255), ""CANTIDAD"" INTEGER(11), ""COMENTARIOS"" TEXT(255));
 DROP TABLE IF EXISTS ""hfarmacias_detalles_productos"";
 CREATE TABLE ""hfarmacias_detalles_productos"" (""NUMERO"" INTEGER(11), ""CICLO_VISITA"" INTEGER(11), ""ZONA"" TEXT(7), ""FARMACIA"" TEXT(255), ""FECHA_VISITA"" TEXT(255), ""MOTIVO"" TEXT(255), ""PRODUCTO"" TEXT(255), ""CANTIDAD"" INTEGER(11), ""COMENTARIOS"" TEXT(255));
 DROP TABLE IF EXISTS ""mw_especialidades"";
-CREATE TABLE ""mw_especialidades"" (""ID_Especialidad"" INTEGER(11), ""TX_Especialidad"" TEXT(255), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""mw_especialidades"" (""ID_Especialidad"" INTEGER(11), ""TX_Especialidad"" TEXT(255), ""TX_EspecialidadAbr"" TEXT(255), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""mw_farmacias"";
-CREATE TABLE ""mw_farmacias"" (""ID_Farmacia"" INTEGER(11), ""TX_Farmacia"" TEXT(255), ""TX_Direccion"" TEXT(255), ""ID_Zona"" INTEGER(11), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""mw_farmacias"" (""ID_Farmacia"" INTEGER(11), ""TX_Farmacia"" TEXT(255), ""TX_Rif"" TEXT(255), ""ID_Estado"" INTEGER(11), ""ID_Ciudad"" INTEGER(11), ""ID_Brick"" INTEGER(11), ""TX_Ruta"" TEXT(255), ""TX_Direccion"" TEXT(255), ""TX_Telefono1"" TEXT(255), ""TX_Telefono2"" TEXT(255), ""ID_Cadena"" INTEGER(11), ""ID_Clasificacion"" INTEGER(11), ""FE_Registro"" TEXT(8), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""mw_hospitales"";
-CREATE TABLE ""mw_hospitales"" (""ID_Hospital"" INTEGER(11), ""TX_Hospital"" TEXT(255), ""TX_Direccion"" TEXT(255), ""ID_Zona"" INTEGER(11), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""mw_hospitales"" (""ID_Hospital"" INTEGER(11), ""TX_Hospital"" TEXT(255), ""ID_Estado"" INTEGER(11), ""ID_Ciudad"" INTEGER(11), ""ID_Brick"" INTEGER(11), ""ID_Institucion"" INTEGER(11), ""TX_Ruta"" TEXT(255), ""TX_Direccion"" TEXT(255), ""TX_Telefono1"" TEXT(255), ""TX_Telefono2"" TEXT(255), ""BO_Cliente"" INTEGER(11), ""BO_Docente"" INTEGER(11), ""FE_Registro"" TEXT(8), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""mw_medicos"";
-CREATE TABLE ""mw_medicos"" (""ID_Medico"" INTEGER(11), ""TX_Nombre"" TEXT(255), ""TX_Apellido"" TEXT(255), ""ID_Especialidad"" INTEGER(11), ""ID_Zona"" INTEGER(11), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""mw_medicos"" (""ID_Medico"" INTEGER(11), ""NU_RegistroSanitario"" INTEGER(11), ""TX_Nombre1"" TEXT(255), ""TX_Nombre2"" TEXT(255), ""TX_Apellido1"" TEXT(255), ""TX_Apellido2"" TEXT(255), ""TX_Sello"" TEXT(255), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""postular"";
 CREATE TABLE ""postular"" (""ID_Postulacion"" INTEGER(11), ""ID_Visitador"" INTEGER(11), ""TX_Descripcion"" TEXT(255), ""FE_Fecha"" TEXT(10), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""puntos"";
@@ -553,7 +555,7 @@ CREATE TABLE ""resumen_transmision_hospital"" (""Zona"" TEXT(7), ""Ciclo"" INTEG
 DROP TABLE IF EXISTS ""serial"";
 CREATE TABLE ""serial"" (""ID_Serial"" INTEGER(11), ""TX_Serial"" TEXT(100), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""temp_hoja_ruta_propuesta"";
-CREATE TABLE ""temp_hoja_ruta_propuesta"" (""ID_Temp"" INTEGER(11), ""ID_Visitador"" INTEGER(11), ""TX_Ruta"" TEXT(255), ""FE_Fecha"" TEXT(10));
+CREATE TABLE ""temp_hoja_ruta_propuesta"" (""Num"" INTEGER(11), ""CICLO"" INTEGER(11), ""ZONA"" TEXT(7), ""SEMANA"" INTEGER(11), ""DIA"" TEXT(10), ""AM"" TEXT(250), ""PM"" TEXT(250));
 DROP TABLE IF EXISTS ""mw_umbrales"";
 CREATE TABLE ""mw_umbrales"" (""ID_Umbral"" INTEGER(11), ""NU_PDR"" INTEGER(11), ""NU_Farmacias"" INTEGER(11), ""NU_Hospitales"" INTEGER(11), ""NU_Percent_PDR"" REAL(16), ""NU_Percent_Visita"" REAL(16), ""NU_Percent_Revisita"" REAL(16), ""NU_Percent_Mix"" REAL(16), ""ID_CicloIni"" INTEGER(11), ""ID_CicloFin"" INTEGER(11), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""umbrales"";
@@ -565,7 +567,7 @@ CREATE TABLE ""version"" (""ID_Version"" INTEGER(11), ""TX_Version"" TEXT(20), "
 DROP TABLE IF EXISTS ""versiones"";
 CREATE TABLE ""versiones"" (""Zona"" TEXT(8), ""AltasBajas"" TEXT(5), ""Bricks"" TEXT(5), ""Busquedad01"" TEXT(5), ""Busquedad02"" TEXT(5), ""Busquedad03"" TEXT(5), ""Busquedad04"" TEXT(5), ""Busquedad05"" TEXT(5), ""CicloCerrado"" TEXT(5), ""Cierre"" TEXT(5), ""Coberturas"" TEXT(5), ""ConfigurarModem"" TEXT(5), ""EliminarEsqPromo"" TEXT(5), ""EliminarMedicos"" TEXT(5), ""Farmacia01"" TEXT(5), ""Fichas"" TEXT(5), ""HojaRuta"" TEXT(5), ""IncluirMedicos"" TEXT(5), ""Informacion"" TEXT(5), ""Menu"" TEXT(5), ""OMA"" TEXT(5), ""OptAltasBajas"" TEXT(5), ""PVM"" TEXT(5), ""PVMUpdate"" TEXT(5), ""ResumenCierre"" TEXT(5), ""Retransmitir"" TEXT(5), ""TrabajoDiario"" TEXT(5), ""Transmision"" TEXT(5), ""Visitas"" TEXT(5), ""VisitasNoFichado"" TEXT(5), ""GuardarMix"" TEXT(3));
 DROP TABLE IF EXISTS ""farmacias_personal"";
-CREATE TABLE ""farmacias_personal"" (""NUMERO"" INTEGER(11), ""ZONA"" TEXT(7), ""FARMACIA"" TEXT(100), ""PERSONAL"" TEXT(100), ""CARGO"" TEXT(50), ""TELEFONO"" TEXT(30), ""CUMPLEANO"" TEXT(10), ""OBSERVACION"" TEXT(100));
+CREATE TABLE ""farmacias_personal"" (""ID"" INTEGER(11), ""NUMERO"" INTEGER(11), ""ZONA"" TEXT(7), ""NOMBRE"" TEXT(40), ""CARGO"" TEXT(40), ""TELEFONO"" TEXT(40), ""CORREO"" TEXT(255), ""CUMPLEANO_MES"" TEXT(25), ""CUMPLEANO_DIA"" INTEGER(11));
 DROP TABLE IF EXISTS ""mw_esquemaspromocionales"";
 CREATE TABLE ""mw_esquemaspromocionales"" (""ID_EsquemaPromocional"" INTEGER(11), ""ID_Ciclo"" INTEGER(11), ""ID_Linea"" INTEGER(11), ""ID_Especialidad"" INTEGER(11), ""ID_Posicion"" INTEGER(11), ""ID_Marca"" INTEGER(11), ""FE_Registro"" TEXT(8), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""mw_farmaciasdroguerias"";
