@@ -63,24 +63,6 @@ namespace WebApplication1.Services
                 await ObtenerDatosTablaAsync(sqlConnection, contenido, tabla, visitadorId, ano, ciclo);
             }
 
-            // Copiar datos históricos (últimos 2 ciclos)
-            if (!limpia)
-            {
-                var tablasHistoricas = new[]
-                {
-                    "MD_Visita_Detalles", "MD_Visitas", "MD_Solicitudes", 
-                    "MD_Hospital_Detalles", "MD_Hospital_Detalles_Medicos",
-                    "MD_Farmacias_Detalles", "MD_Farmacias_Detalles_Productos"
-                };
-
-                foreach (var tabla in tablasHistoricas)
-                {
-                    string nombreSqlite = "h" + tabla.Substring(3).ToLower(); // MD_Visitas -> hvisitas
-                    contenido.AppendLine($"-- Datos históricos de la tabla {tabla} -> {nombreSqlite}");
-                    await ObtenerDatosHistoricosAsync(sqlConnection, contenido, tabla, nombreSqlite, visitadorId, ano, ciclo);
-                }
-            }
-
             // Agregar datos estáticos de puntos
             contenido.AppendLine("-- Datos estáticos de puntos");
             contenido.AppendLine("INSERT INTO puntos (TX_Concepto, NU_Puntos) VALUES ('RE', 9);");
