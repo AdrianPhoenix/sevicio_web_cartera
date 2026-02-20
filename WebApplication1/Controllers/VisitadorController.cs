@@ -138,5 +138,43 @@ namespace WebApplication1.Controllers
                 return StatusCode(500, $"Error obteniendo KPIs: {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Verifica el estado de sincronización de un visitador para determinar si la cartera está actualizada
+        /// </summary>
+        /// <param name="zona">Zona del visitador</param>
+        /// <param name="ano">Año del ciclo (por defecto año actual)</param>
+        /// <param name="ciclo">Número de ciclo (por defecto 1)</param>
+        /// <returns>Estado de sincronización con información de la última transmisión procesada</returns>
+        [HttpGet("{zona}/estado-sincronizacion")]
+        public async Task<ActionResult<EstadoSincronizacionResponse>> GetEstadoSincronizacion(
+            string zona, 
+            [FromQuery] int ano = 0, 
+            [FromQuery] int ciclo = 1)
+        {
+            try
+            {
+                if (ano == 0) ano = DateTime.Now.Year;
+
+                var estado = await _dataService.ObtenerEstadoSincronizacionAsync(zona, ano, ciclo);
+                
+                if (estado == null)
+                {
+                    return NotFound(new
+                    {
+                        zona,
+                        ciclo,
+                        ano,
+                        mensaje = "No se encontraron transmisiones para esta zona, año y ciclo"
+                    });
+                }
+
+                return Ok(estado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error obteniendo estado de sincronización: {ex.Message}");
+            }
+        }
     }
 }

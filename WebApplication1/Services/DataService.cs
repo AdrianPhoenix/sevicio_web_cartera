@@ -201,5 +201,217 @@ namespace WebApplication1.Services
 
             return null;
         }
+
+        public async Task<EstadoSincronizacionResponse?> ObtenerEstadoSincronizacionAsync(string zona, int ano, int ciclo)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            // PASO 1: Obtener última transmisión de MD_Transmision
+            var queryTransmision = @"SELECT TOP 1 FECHA, HORA, TIPO 
+                                     FROM MD_Transmision 
+                                     WHERE ZONA = @zona AND CICLO = @ciclo AND NU_ANO = @ano 
+                                     ORDER BY FECHA DESC, HORA DESC";
+
+            string? fechaTransmision = null;
+            string? horaTransmision = null;
+            string? tipoTransmision = null;
+
+            using (var command = new SqlCommand(queryTransmision, connection))
+            {
+                command.Parameters.AddWithValue("@zona", zona);
+                command.Parameters.AddWithValue("@ciclo", ciclo);
+                command.Parameters.AddWithValue("@ano", ano);
+
+                using var reader = await command.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    fechaTransmision = reader.GetString(0);
+                    horaTransmision = reader.GetString(1);
+                    tipoTransmision = reader.GetString(2);
+                }
+            }
+
+            // Si no hay transmisión, retornar null
+            if (fechaTransmision == null || horaTransmision == null)
+            {
+                return null;
+            }
+
+            // PASO 2: Verificar en MD_Resumen_Transmision
+            var queryResumen = @"SELECT Fecha, Hora, Visitados, Fichados 
+                                 FROM MD_Resumen_Transmision 
+                                 WHERE Zona = @zona AND CICLO = @ciclo AND NU_ANO = @ano";
+
+            bool existeEnResumen = false;
+            string? fechaResumen = null;
+            string? horaResumen = null;
+            int visitados = 0;
+            int fichados = 0;
+
+            using (var command = new SqlCommand(queryResumen, connection))
+            {
+                command.Parameters.AddWithValue("@zona", zona);
+                command.Parameters.AddWithValue("@ciclo", ciclo);
+                command.Parameters.AddWithValue("@ano", ano);
+
+                using var reader = await command.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    fechaResumen = reader.GetString(0);
+                    horaResumen = reader.GetString(1);
+                    
+                    // Usar Convert para manejar tanto Int16 como Int32
+                    visitados = Convert.ToInt32(reader.GetValue(2));
+                    fichados = Convert.ToInt32(reader.GetValue(3));
+
+                    // Verificar si la fecha coincide y la hora está dentro del rango de ±3 segundos
+                    if (fechaResumen == fechaTransmision && CompararHorasConTolerancia(horaResumen, horaTransmision, 3))
+                    {
+                        existeEnResumen = true;
+                    }
+                }
+            }
+
+            // PASO 3: Verificar en MD_Resumen_Transmision_Acumulada
+            var queryAcumulada = @"SELECT TOP 1 Fecha, Hora 
+                                   FROM MD_Resumen_Transmision_Acumulada 
+                                   WHERE Zona = @zona AND CICLO = @ciclo AND NU_ANO = @ano 
+                                   ORDER BY Fecha DESC, Hora DESC";
+
+            bool existeEnAcumulada = false;
+
+            using (var command = new SqlCommand(queryAcumulada, connection))
+            {
+                command.Parameters.AddWithValue("@zona", zona);
+                command.Parameters.AddWithValue("@ciclo", ciclo);
+                command.Parameters.AddWithValue("@ano", ano);
+
+                using var reader = await command.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    string fechaAcumulada = reader.GetString(0);
+                    string horaAcumulada = reader.GetString(1);
+
+                    // Verificar si la fecha coincide y la hora está dentro del rango de ±3 segundos
+                    if (fechaAcumulada == fechaTransmision && CompararHorasConTolerancia(horaAcumulada, horaTransmision, 3))
+                    {
+                        existeEnAcumulada = true;
+                    }
+                }
+            }
+
+            // PASO 4: Determinar estado
+            bool carteraActualizada = existeEnResumen && existeEnAcumulada;
+            string estadoProcesamiento = carteraActualizada ? "COMPLETADO" : "PROCESANDO";
+
+            // Construir timestamp ISO 8601
+            string timestamp = ConvertirATimestamp(fechaTransmision, horaTransmision);
+
+            return new EstadoSincronizacionResponse
+            {
+                Zona = zona,
+                Ciclo = ciclo,
+                Ano = ano,
+                CarteraActualizada = carteraActualizada,
+                EstadoProcesamiento = estadoProcesamiento,
+                UltimaTransmision = new UltimaTransmisionInfo
+                {
+                    Fecha = fechaTransmision,
+                    Hora = horaTransmision,
+                    Tipo = tipoTransmision ?? "",
+                    Timestamp = timestamp
+                },
+                ResumenProcesado = fechaResumen != null ? new ResumenProcesadoInfo
+                {
+                    Fecha = fechaResumen,
+                    Hora = horaResumen ?? "",
+                    Visitados = visitados,
+                    Fichados = fichados
+                } : null
+            };
+        }
+
+        private bool CompararHorasConTolerancia(string hora1, string hora2, int toleranciaSegundos)
+        {
+            try
+            {
+                // Normalizar las horas (eliminar punto final si existe)
+                hora1 = hora1.TrimEnd('.');
+                hora2 = hora2.TrimEnd('.');
+
+                // Convertir a TimeSpan
+                var time1 = ParsearHora(hora1);
+                var time2 = ParsearHora(hora2);
+
+                if (time1 == null || time2 == null)
+                    return false;
+
+                // Calcular diferencia en segundos
+                var diferencia = Math.Abs((time1.Value - time2.Value).TotalSeconds);
+
+                return diferencia <= toleranciaSegundos;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private TimeSpan? ParsearHora(string hora)
+        {
+            try
+            {
+                // Formato esperado: "08:18:57 P.M" o "08:18:57 A.M"
+                var partes = hora.Split(' ');
+                if (partes.Length != 2)
+                    return null;
+
+                var tiempoPartes = partes[0].Split(':');
+                if (tiempoPartes.Length != 3)
+                    return null;
+
+                int horas = int.Parse(tiempoPartes[0]);
+                int minutos = int.Parse(tiempoPartes[1]);
+                int segundos = int.Parse(tiempoPartes[2]);
+
+                // Ajustar para formato 12 horas
+                string ampm = partes[1].ToUpper();
+                if (ampm.StartsWith("P") && horas != 12)
+                    horas += 12;
+                else if (ampm.StartsWith("A") && horas == 12)
+                    horas = 0;
+
+                return new TimeSpan(horas, minutos, segundos);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private string ConvertirATimestamp(string fecha, string hora)
+        {
+            try
+            {
+                // Parsear fecha (formato: "2026-02-19")
+                var fechaPartes = fecha.Split('-');
+                int year = int.Parse(fechaPartes[0]);
+                int month = int.Parse(fechaPartes[1]);
+                int day = int.Parse(fechaPartes[2]);
+
+                // Parsear hora
+                var timeSpan = ParsearHora(hora);
+                if (timeSpan == null)
+                    return $"{fecha}T00:00:00";
+
+                var dateTime = new DateTime(year, month, day, timeSpan.Value.Hours, timeSpan.Value.Minutes, timeSpan.Value.Seconds);
+                return dateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+            }
+            catch
+            {
+                return $"{fecha}T00:00:00";
+            }
+        }
     }
 }
