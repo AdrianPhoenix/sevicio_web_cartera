@@ -271,8 +271,11 @@ namespace WebApplication1.Services
                     continue;
                 }
                 
-                // Excluir REGISTRO y ZONA solo para ayuda_visual
-                if (nombreTablaSqlite == "ayuda_visual" && 
+                // Excluir REGISTRO y ZONA para todas las tablas de ayuda_visual
+                if ((nombreTablaSqlite == "ayuda_visual" || 
+                     nombreTablaSqlite == "ayuda_visual_fe" || 
+                     nombreTablaSqlite == "ayuda_visual_mp4" || 
+                     nombreTablaSqlite == "ayuda_visual_mp4_fe") && 
                     (col.Equals("REGISTRO", StringComparison.OrdinalIgnoreCase) || 
                      col.Equals("ZONA", StringComparison.OrdinalIgnoreCase)))
                 {
@@ -472,14 +475,14 @@ DROP TABLE IF EXISTS ""mw_visita_detalles"";
 CREATE TABLE ""mw_visita_detalles"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(50), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(11), ""PRODUCTO"" TEXT(255), ""MUETRAS"" INTEGER(11), ""MATERIAL_PRO"" INTEGER(11), ""MATERIAL_POP"" INTEGER(11), ""CARACTERISTICAS"" TEXT(35), ""BENEFICIOS"" TEXT(35), ""PRESENTACION"" TEXT(15), ""SOLICITA"" TEXT(25), ""SOLICITA_DETALLE"" TEXT(200), ""PRESCRIBE"" TEXT(25), ""NO_UTILIZA"" TEXT(20), ""PRESCRIBE_CARACTERISTICAS"" TEXT(35), ""PRESCRIBE_BENEFICIO"" TEXT(35));
 DROP TABLE IF EXISTS ""mw_visitas"";
 CREATE TABLE ""mw_visitas"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(16), ""MOTIVO"" TEXT(20), ""PASADO_DESKTOP"" TEXT(1), ""PASADO_INTERNET"" TEXT(1), ""FECHA_SISTEMA"" TEXT(20), ""HORA_SISTEMA"" TEXT(20));
-DROP TABLE IF EXISTS ""mw_ayuda_visual"";
-CREATE TABLE ""mw_ayuda_visual"" (""ID_AyudaVisual"" INTEGER(11), ""TX_AyudaVisual"" TEXT(255), ""TX_Ruta"" TEXT(255), ""ID_Linea"" INTEGER(11), ""ID_Marca"" INTEGER(11), ""BO_Activo"" INTEGER(11));
-DROP TABLE IF EXISTS ""mw_ayuda_visual_fe"";
-CREATE TABLE ""mw_ayuda_visual_fe"" (""ID_AyudaVisualFE"" INTEGER(11), ""TX_AyudaVisualFE"" TEXT(255), ""TX_Ruta"" TEXT(255), ""ID_Linea"" INTEGER(11), ""ID_Marca"" INTEGER(11), ""BO_Activo"" INTEGER(11));
-DROP TABLE IF EXISTS ""mw_ayuda_visual_mp4"";
-CREATE TABLE ""mw_ayuda_visual_mp4"" (""ID_AyudaVisualMP4"" INTEGER(11), ""TX_AyudaVisualMP4"" TEXT(255), ""TX_Ruta"" TEXT(255), ""ID_Linea"" INTEGER(11), ""ID_Marca"" INTEGER(11), ""BO_Activo"" INTEGER(11));
-DROP TABLE IF EXISTS ""mw_ayuda_visual_mp4_fe"";
-CREATE TABLE ""mw_ayuda_visual_mp4_fe"" (""ID_AyudaVisualMP4FE"" INTEGER(11), ""TX_AyudaVisualMP4FE"" TEXT(255), ""TX_Ruta"" TEXT(255), ""ID_Linea"" INTEGER(11), ""ID_Marca"" INTEGER(11), ""BO_Activo"" INTEGER(11));
+DROP TABLE IF EXISTS ""ayuda_visual"";
+CREATE TABLE ""ayuda_visual"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(16), ""MOTIVO"" TEXT(20), ""ESPECIALIDAD"" TEXT(25), ""CLASIFICACION"" TEXT(2), ""FECHA_SISTEMA"" TEXT(10), ""HORA_SISTEMA"" TEXT(8), ""PRODUCTO"" TEXT(30), ""POSICION"" TEXT(2), ""ORDEN"" INTEGER(11));
+DROP TABLE IF EXISTS ""ayuda_visual_FE"";
+CREATE TABLE ""ayuda_visual_FE"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(16), ""MOTIVO"" TEXT(20), ""ESPECIALIDAD"" TEXT(25), ""CLASIFICACION"" TEXT(2), ""FECHA_SISTEMA"" TEXT(10), ""HORA_SISTEMA"" TEXT(8), ""PRODUCTO"" TEXT(30), ""POSICION"" TEXT(2), ""ORDEN"" INTEGER(11));
+DROP TABLE IF EXISTS ""ayuda_visual_MP4"";
+CREATE TABLE ""ayuda_visual_MP4"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(16), ""MOTIVO"" TEXT(20), ""ESPECIALIDAD"" TEXT(25), ""CLASIFICACION"" TEXT(2), ""FECHA_SISTEMA"" TEXT(10), ""HORA_SISTEMA"" TEXT(8), ""PRODUCTO"" TEXT(30), ""POSICION"" TEXT(2), ""ORDEN"" INTEGER(11));
+DROP TABLE IF EXISTS ""ayuda_visual_MP4_FE"";
+CREATE TABLE ""ayuda_visual_MP4_FE"" (""REGISTRO"" TEXT(5), ""ZONA"" TEXT(7), ""FECHA_VISITA"" TEXT(10), ""CICLO"" INTEGER(11), ""TIPO"" TEXT(16), ""MOTIVO"" TEXT(20), ""ESPECIALIDAD"" TEXT(25), ""CLASIFICACION"" TEXT(2), ""FECHA_SISTEMA"" TEXT(10), ""HORA_SISTEMA"" TEXT(8), ""PRODUCTO"" TEXT(30), ""POSICION"" TEXT(2), ""ORDEN"" INTEGER(11));
 DROP TABLE IF EXISTS ""mw_farmacias_personal"";
 CREATE TABLE ""mw_farmacias_personal"" (""NUMERO"" INTEGER(11), ""ZONA"" TEXT(7), ""FARMACIA"" TEXT(100), ""PERSONAL"" TEXT(100), ""CARGO"" TEXT(50), ""TELEFONO"" TEXT(30), ""CUMPLEANO"" TEXT(10), ""OBSERVACION"" TEXT(100));
 DROP TABLE IF EXISTS ""mw_hospital_personal"";
