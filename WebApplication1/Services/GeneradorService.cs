@@ -263,7 +263,11 @@ namespace WebApplication1.Services
                                         nombreTablaSqlite == "visitas" ||
                                         nombreTablaSqlite == "hvisitas" ||
                                         nombreTablaSqlite == "hoja_ruta" ||
-                                        nombreTablaSqlite == "hoja_ruta_propuesta";
+                                        nombreTablaSqlite == "hoja_ruta_propuesta" ||
+                                        nombreTablaSqlite == "ayuda_visual" ||
+                                        nombreTablaSqlite == "ayuda_visual_fe" ||
+                                        nombreTablaSqlite == "ayuda_visual_mp4" ||
+                                        nombreTablaSqlite == "ayuda_visual_mp4_fe";
                 
                 // Si es CICLO y la tabla NO permite CICLO, excluir
                 if (esCiclo && !tablaPermiteCiclo)
@@ -271,16 +275,9 @@ namespace WebApplication1.Services
                     continue;
                 }
                 
-                // Excluir REGISTRO y ZONA para todas las tablas de ayuda_visual
-                if ((nombreTablaSqlite == "ayuda_visual" || 
-                     nombreTablaSqlite == "ayuda_visual_fe" || 
-                     nombreTablaSqlite == "ayuda_visual_mp4" || 
-                     nombreTablaSqlite == "ayuda_visual_mp4_fe") && 
-                    (col.Equals("REGISTRO", StringComparison.OrdinalIgnoreCase) || 
-                     col.Equals("ZONA", StringComparison.OrdinalIgnoreCase)))
-                {
-                    continue;
-                }
+                // CORRECCIÓN: Se eliminó la exclusión incorrecta de REGISTRO y ZONA para ayuda_visual
+                // Estas columnas son CRÍTICAS para relacionar las ayudas visuales con médicos/farmacias y zonas
+                // Fecha de corrección: 21/02/2026
                 
                 // Si llegamos aquí, incluir la columna
                 finalColumns.Add(col);
