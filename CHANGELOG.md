@@ -5,6 +5,19 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 
+## [4.1.6] - 2026-03-24
+
+### 🔧 Corregido
+
+#### Issue #009: Columna COMENTARIOS sobrante en farmacias_detalles_productos
+- **Problema:** Las tablas `farmacias_detalles_productos`, `hfarmacias_detalles_productos` y `mw_farmacias_detalles_productos` incluían columna `COMENTARIOS` que no existe en el ClickOnce
+- **Causa:** Esquema embebido tenía 9 columnas en vez de 8
+- **Solución:** Eliminada columna `COMENTARIOS` de las 3 tablas
+- **Archivo:** `WebApplication1/Services/GeneradorService.cs`
+- **Documentación:** `docs/issues/ISSUE_009_COLUMNA_COMENTARIOS_FARMACIAS_DETALLES_PRODUCTOS.md`
+
+---
+
 ## [4.1.5] - 2026-03-24
 
 ### 🔧 Corregido
