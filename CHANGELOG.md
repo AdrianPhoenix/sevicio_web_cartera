@@ -5,6 +5,20 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 
+## [4.1.5] - 2026-03-24
+
+### 🔧 Corregido
+
+#### Issue #008: Nombres de columnas incorrectos en tabla mw_tipomedicos
+- **Problema:** La tabla `mw_tipomedicos` usaba `ID_TipoMedico` y `TX_TipoMedico` en lugar de `ID_Tipo` y `TX_Tipo` del ClickOnce
+- **Causa:** Esquema embebido no coincidía con el esquema original del ClickOnce
+- **Solución:** Corregidos nombres de columnas para coincidir con ClickOnce
+- **Archivo:** `WebApplication1/Services/GeneradorService.cs`
+- **Documentación:** `docs/issues/ISSUE_008_COLUMNAS_MW_TIPOMEDICOS.md`
+- **Cartera verificada:** `test_carteras/web_localhost/Cartera_334_24032026.txt`
+
+---
+
 ## [4.1.0] - 2026-02-17
 
 ### 🔧 Corregido

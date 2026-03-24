@@ -443,7 +443,7 @@ CREATE TABLE ""mw_regiones"" (""ID_Region"" INTEGER(11), ""TX_Region"" TEXT(255)
 DROP TABLE IF EXISTS ""MW_TipoDescuentos"";
 CREATE TABLE ""MW_TipoDescuentos"" (""ID_TipoDescuento""  INTEGER NOT NULL, ""TX_TipoDescuento""  TEXT(50) NOT NULL, ""NU_Descuento""  REAL(4,2) NOT NULL, ""BO_Activo""  INTEGER NOT NULL, PRIMARY KEY (""ID_TipoDescuento""));
 DROP TABLE IF EXISTS ""mw_tipomedicos"";
-CREATE TABLE ""mw_tipomedicos"" (""ID_TipoMedico"" INTEGER(11), ""TX_TipoMedico"" TEXT(255), ""BO_Activo"" INTEGER(11));
+CREATE TABLE ""mw_tipomedicos"" (""ID_Tipo"" INTEGER(11), ""TX_Tipo"" TEXT(255), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_Visitadores"";
 CREATE TABLE ""MW_Visitadores"" (""ID_Visitador"" INTEGER(11), ""TX_Nombre"" TEXT(255), ""TX_Apellido"" TEXT(255), ""TX_Usuario"" TEXT(255), ""TX_Password"" TEXT(255), ""ID_Empresa"" INTEGER(11), ""ID_Linea"" INTEGER(11), ""BO_Activo"" INTEGER(11));
 DROP TABLE IF EXISTS ""MW_VisitadoresHistorial"";
