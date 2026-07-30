@@ -71,7 +71,7 @@ Este documento describe los endpoints del servicio web `WebApplication1` que **r
 *   **Parámetros**:
     *   `id` (obligatorio): ID del visitador
     *   `ano` (opcional): Año, por defecto actual
-    *   `ciclo` (opcional): Ciclo, por defecto 1
+    *   `ciclo` (opcional): Ciclo. Si no se envía, se auto-detecta de `MW_Ciclos` (NU_Estatus=1). Si se envía explícitamente, se respeta.
     *   `limpia` (opcional): Limpieza de datos, por defecto false
     *   `cicloAbierto` (opcional): Marcar ciclo como abierto, por defecto false
 *   **Estado**: **✅ FUNCIONANDO PERFECTAMENTE - PROBADO CON ANDROID**

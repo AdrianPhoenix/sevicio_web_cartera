@@ -109,6 +109,31 @@ namespace WebApplication1.Services
             return annios.ToArray();
         }
 
+        public async Task<int> ObtenerCicloActivoAsync(int ano)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            var query = "SELECT TOP 1 NU_Ciclo FROM MW_Ciclos WHERE NU_Ano = @ano AND NU_Estatus = 1";
+            using var command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@ano", ano);
+            var result = await command.ExecuteScalarAsync();
+            if (result != null && result != DBNull.Value)
+                return Convert.ToInt32(result);
+
+            query = "SELECT TOP 1 NU_Ciclo FROM MW_Ciclos WHERE NU_Ano = @ano AND NU_Estatus = 2 ORDER BY NU_Ciclo DESC";
+            using var command2 = new SqlCommand(query, connection);
+            command2.Parameters.AddWithValue("@ano", ano);
+            result = await command2.ExecuteScalarAsync();
+            if (result != null && result != DBNull.Value)
+            {
+                int ultimoCerrado = Convert.ToInt32(result);
+                return ultimoCerrado < 12 ? ultimoCerrado + 1 : 1;
+            }
+
+            return DateTime.Now.Month;
+        }
+
         public async Task<string> GetDebugInfoAsync()
         {
             using var connection = new SqlConnection(_connectionString);

@@ -36,7 +36,7 @@ GET /api/visitador/{zona}/estado-sincronizacion
 |-----------|------|-----------|-----------|-------------|---------|
 | `zona` | string | Path | Sí | Zona del visitador | `336` |
 | `ano` | int | Query | No | Año del ciclo (default: año actual) | `2026` |
-| `ciclo` | int | Query | No | Número de ciclo (default: 1) | `2` |
+| `ciclo` | int | Query | No | Número de ciclo. Si no se envía, se auto-detecta del ciclo activo en MW_Ciclos | `2` |
 
 ### Ejemplo de Llamada
 ```http

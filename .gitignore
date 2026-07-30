@@ -373,3 +373,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Publicaciones / deployment artifacts
+publicaciones/
+
+# Carteras de prueba generadas
+test_carteras/

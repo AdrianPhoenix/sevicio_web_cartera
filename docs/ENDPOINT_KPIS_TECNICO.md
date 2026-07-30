@@ -117,7 +117,7 @@ string estatus = estatusNum switch
 **Características**:
 - Validación de parámetros
 - Año por defecto: año actual
-- Ciclo por defecto: 1
+- Ciclo: auto-detectado de `MW_Ciclos` (NU_Estatus=1) si no se envía. Si se envía explícitamente, se respeta
 - Manejo de errores 404 y 500
 - Respuesta JSON automática
 

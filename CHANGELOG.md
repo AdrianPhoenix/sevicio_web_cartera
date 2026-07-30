@@ -5,6 +5,28 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 
+## [4.1.7] - 2026-07-30
+
+### ✨ Agregado
+
+#### Auto-detección de ciclo activo desde MW_Ciclos
+- **Problema:** La APK calculaba el ciclo basándose en el número del mes actual, lo que causaba descargas con ciclo incorrecto cuando un ciclo ya estaba cerrado
+- **Solución:** El backend ahora auto-detecta el ciclo activo consultando `MW_Ciclos` (NU_Estatus = 1) cuando el cliente no lo envía explícitamente
+- **Estrategia de fallback (3 niveles):**
+  1. `NU_Estatus = 1` (ciclo marcado como Activo en BD)
+  2. Último ciclo cerrado + 1 (si no hay activo explícito)
+  3. `DateTime.Now.Month` (último recurso, comportamiento anterior)
+- **Compatibilidad hacia atrás:** Si el cliente envía `ciclo` explícitamente, se respeta ese valor
+- **Archivos:**
+  - `WebApplication1/Services/DataService.cs` — nuevo método `ObtenerCicloActivoAsync()`
+  - `WebApplication1/Controllers/VisitadorController.cs` — 3 endpoints modificados (`cartera-txt`, `kpis`, `estado-sincronizacion`)
+- **Endpoints afectados:** Parámetro `ciclo` cambia de `int = 1` a `int? = null` (auto-detección)
+
+### 🛠 Mantenimiento
+- Actualizado `.gitignore` para excluir `publicaciones/` y `test_carteras/`
+
+---
+
 ## [4.1.6] - 2026-03-24
 
 ### 🔧 Corregido
